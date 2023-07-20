@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drum Kit</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <div class="keys">
+      <div class="key" data-key="65" id="div1">
+        <kbd> A </kbd>
+        <span class="sound">Clap</span>
+      </div>
+
+      <div class="key" data-key="83" id="div2">
+        <kbd> S </kbd>
+        <span class="sound">Hihat</span>
+      </div>
+
+      <div class="key" data-key="68" id="div3">
+        <kbd> D </kbd>
+        <span class="sound">Kick</span>
+      </div>
+
+      <div class="key" data-key="70" id="div4">
+        <kbd> F </kbd>
+        <span class="sound">Openhat</span>
+      </div>
+
+      <div class="key" data-key="71" id="div5">
+        <kbd> G </kbd>
+        <span class="sound">Bell</span>
+      </div>
+
+      <div class="key" data-key="72" id="div6">
+        <kbd> H </kbd>
+        <span class="sound">RIDE</span>
+      </div>
+
+      <div class="key" data-key="74" id="div7">
+        <kbd> J </kbd>
+        <span class="sound">SNARE</span>
+      </div>
+
+      <div class="key" data-key="75" id="div8">
+        <kbd> K </kbd>
+        <span class="sound">TOM</span>
+      </div>
+
+      <div class="key" data-key="76" id="div9">
+        <kbd> L </kbd>
+        <span class="sound">Wood </span>
+      </div>
+
+      <audio
+        id="audio1"
+        data-key="65"
+        src="./songsample/13[kb]707-clap.wav.mp3"
+      ></audio>
+      <audio
+        id="audio2"
+        data-key="83"
+        src="./songsample/MoogFilterOpenHat_01_614.wav"
+      ></audio>
+      <audio id="audio3" data-key="68" src="./songsample/kick.wav"></audio>
+      <audio
+        id="audio4"
+        data-key="70"
+        src="./songsample/OpenHat_02_577.wav"
+      ></audio>
+      <audio
+        id="audio5"
+        data-key="71"
+        src="./songsample/high-sizzling-bell-one-shot_C.wav"
+      ></audio>
+      <audio
+        id="audio6"
+        data-key="72"
+        src="./songsample/MotownRide_01_652.wav"
+      ></audio>
+      <audio
+        id="audio7"
+        data-key="74"
+        src="./songsample/Snare_03_705.wav"
+      ></audio>
+      <audio id="audio8" data-key="75" src="./songsample/Tom_837.wav"></audio>
+      <audio
+        id="audio9"
+        data-key="76"
+        src="./songsample/woodblockr.wav"
+      ></audio>
+    </div>
+
+    <script>
+      function playsound(Event) {
+        const audio = document.querySelector(
+          `audio[data-key="${Event.keyCode}"]`
+        );
+        console.log(audio);
+        if (audio === null) return;
+        audio.play();
+
+        const changeclass = document.querySelector(
+          `.key[data-key="${Event.keyCode}"]`
+        );
+        changeclass.classList.add("playing");
+      }
+
+      window.addEventListener("keydown", playsound);
+
+      //BELOW WE CAN NOT USE FLAT ARROW FUNCTION BECAUSE THIS GIVES WINDOW VALUE NOT A PERTICULAR OR THIS CAN NOT BIND WITH FLAT ARROW FUNCTION
+      function removetransition(event) {
+        console.log(event);
+        if (event.propertyName !== "transform") return;
+        console.log(this);
+        this.classList.remove("playing");
+      }
+
+      const keys = document.querySelectorAll(".key");
+      // console.log(key)
+      keys.forEach((keynode) =>
+        keynode.addEventListener("transitionend", removetransition)
+      );
+
+      //when user click perticular div
+
+      const divs = document.querySelectorAll("div");
+
+      divs.forEach((div) => {
+        div.addEventListener("click", function (event) {
+          const audioId = this.id.replace("div", "audio");
+          const audio = document.getElementById(audioId);
+          if (audio) {
+            audio.play();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
